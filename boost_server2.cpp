@@ -21,7 +21,6 @@ std::string search_max(const std::string& input) {
     return result;
 }
 
-// Функция для общения с одним подключенным клиентом
 void session(tcp::socket socket) {
     try {
 
@@ -31,7 +30,6 @@ void session(tcp::socket socket) {
         while (true) {
             size_t length = boost::asio::read_until(socket, buffer, "\n", ec);
 
-            // Извлекаем строку из буфера
             std::istream input_stream(&buffer);
             std::string client_message;
             std::getline(input_stream, client_message);
@@ -53,16 +51,13 @@ void session(tcp::socket socket) {
 }
 
 void server(boost::asio::io_context& io_context, unsigned short port) {
-    // Создаем acceptor, который будет слушать порт
     tcp::acceptor acceptor(io_context, tcp::endpoint(tcp::v4(), port));
     std::cout << "Server is listening on port " << port << "..." << std::endl;
 
     while (true) {
         tcp::socket socket(io_context);
-        // Ждем подключения клиента
         acceptor.accept(socket);
         std::cout << "Client connected!" << std::endl;
-        // Обрабатываем клиента
         session(std::move(socket));
     }
 }
