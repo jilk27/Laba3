@@ -7,18 +7,15 @@ using boost::asio::ip::tcp;
 
 void client(boost::asio::io_context& io_context, const std::string& host, const std::string& port) {
     tcp::resolver resolver(io_context);
-    // Преобразуем имя хоста и порт в IP-адреса
     auto endpoints = resolver.resolve(host, port);
 
     tcp::socket socket(io_context);
-    // Подключаемся к серверу
     boost::asio::connect(socket, endpoints);
     std::cout << "Connected to server!" << std::endl;
 
     boost::system::error_code ec;
 
     while (true) {
-        // 2. Отправляем данные серверу
         std::string message;
         std::getline(std::cin, message);
 
